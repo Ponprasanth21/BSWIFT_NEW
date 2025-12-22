@@ -283,6 +283,10 @@ public class FileUploaderController {
 
 		List<FolderRespModel> dataList = new ArrayList<>();
 		for (i = 0; i < file.list().length; i++) {
+			
+			if(fileList[i].endsWith(".DONE")) {
+                continue;
+            }
 			System.out.println("I :" + i);
 			files.setFile_name(fileList[i]);
 			files.setMsg_type("MT");
@@ -405,6 +409,11 @@ public class FileUploaderController {
 
 		List<FolderRespModel> dataList = new ArrayList<>();
 		for (i = 0; i < file.list().length; i++) {
+			
+			if(fileList[i].endsWith(".DONE")) {
+                continue;
+            }
+			
 			System.out.println("I :" + i);
 			files.setFile_name(fileList[i]);
 			files.setMsg_type("MX");

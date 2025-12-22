@@ -26,6 +26,9 @@ public interface BipsSwiftMsgConversionRepo extends JpaRepository<BIPS_SWIFT_MSG
 	@Query(value = "select swift_msg_type from BIPS_SWIFT_FILE_MGT_TABLE where srl_no =?1", nativeQuery = true)
 	String findmsgtype(String ref_Num);
 	
+	@Query(value = "select file_name from BIPS_SWIFT_FILE_MGT_TABLE where srl_no =?1", nativeQuery = true)
+	String findConvertedFile(String ref_Num);
+	
 	@Query(value = "SELECT COUNT(*) FROM BIPS_SWIFT_FILE_MGT_TABLE where swift_msg_type = 'MT'", nativeQuery = true)
 	String totalMTdata();
 

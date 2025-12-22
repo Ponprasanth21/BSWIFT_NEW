@@ -1,11 +1,16 @@
 package com.bornfire.controllers;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
@@ -132,6 +137,7 @@ import com.bornfire.services.TransactionService;
 import com.bornfire.services.UserProfileService;
 import com.bornfire.services.WalletFeesService;
 import com.bornfire.services.WalletServices;
+//import com.google.common.io.Files;
 import com.google.gson.Gson;
 
 import net.sf.jasperreports.engine.JRException;
@@ -4147,7 +4153,7 @@ public class MainController {
 			@RequestParam(value = "refNo", required = false) String ref_Num,
 			@RequestParam(value = "formmode", required = false) String formmode,
 			@ModelAttribute MerchantCategoryCodeEntity bankAgentTable, Model md, HttpServletRequest req)
-			throws FileNotFoundException, SQLException, IOException {
+			throws FileNotFoundException, SQLException, IOException, ParseException {
 
 		String roleId = (String) req.getSession().getAttribute("ROLEID");
 		md.addAttribute("IPSRoleMenu", AccessRoleService.getRoleMenu(roleId));
@@ -4166,11 +4172,14 @@ public class MainController {
 			md.addAttribute("menuname", "SWIFT MX MESSAGE");
 
 		} else if (formmode.equals("AfterConvList")) {
+			String convertedFile = bipsSwiftMsgConversionRepo.findConvertedFile(ref_Num);
 			md.addAttribute("Mtlist", bipsSwiftMtMsgRepo.findmtbySrl(ref_Num));
 			md.addAttribute("Mxlist", bipsSwiftMxMsgRepo.findmxbySrl(ref_Num));
 			md.addAttribute("MsgType", bipsSwiftMsgConversionRepo.findmsgtype(ref_Num));
 			System.out.println(bipsSwiftMsgConversionRepo.findmsgtype(ref_Num) + "msgtypeval+++++");
 			System.out.println("The getting reference number is " + ref_Num);
+			
+			chnageFileNameTODONE(convertedFile);
 			
 			BIPS_SWIFT_MX_MSG bipsSwiftmxMsg = bipsSwiftMxMsgRepo.findmxbySrl(ref_Num);
 
@@ -4816,5 +4825,37 @@ public class MainController {
 		fORM_TRANSFER_REP.save(fORM_TRANSFER_ENTITY);
 		return "Saved Successfully";
 	}
+	
+	
+	private void chnageFileNameTODONE(String convertedFile)
+	        throws IOException, ParseException {
+
+	    Path sourcePath = Paths.get(convertedFile);
+
+	    if (!Files.exists(sourcePath)) {
+	        System.out.println("File not found: " + convertedFile);
+	        return;
+	    }
+
+	    if (sourcePath.toString().endsWith(".DONE")) {
+	        System.out.println("File already converted");
+	        return;
+	    }
+
+	    Path targetPath = Paths.get(
+	    		convertedFile.replaceFirst("\\.[^.]+$", ".DONE")
+	    );
+
+	    Files.move(
+	            sourcePath,
+	            targetPath,
+	            StandardCopyOption.REPLACE_EXISTING
+	    );
+
+	    System.out.println("File renamed to: " + targetPath);
+	}
+
+
+
 
 }
