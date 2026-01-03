@@ -602,37 +602,61 @@ jQuery(function($){
 		style="box-shadow: 6px 6px 12px #bd702f9c; z-index: 1031; background-color: white; height: 70px; border-color: red;">
 
 		<div class="col-sm-12" style="border-color: red">
-			<img th:src=@{/images/Bornfire.png} id="bfirelogo" style="height: 70px; width: 100px;margin-left: -24px; margin-top: 5px" alt="Bornfire">
+			<img th:src=@{/images/Bornfire.png} id="bfirelogo"
+				style="height: 70px; width: 100px; margin-left: -24px; margin-top: 5px"
+				alt="Bornfire">
 
 			<div id="headerdiv">
-				<h3 style="font-size:18px;">BORNFIRE MESSAGE CONVERTION</h3>
+				<h3 style="font-size: 18px;">BORNFIRE MESSAGE CONVERTION</h3>
 			</div>
 
-			<div class="btn float-right" id="userdtl" title="Profile" style="margin-top: 5px;">
+			<div class="btn float-right" id="userdtl" title="Profile"
+				style="margin-top: 5px;">
 
-				<i th:if="${session.IMAGEUSER}==null"><img th:src=@{/images/UserImage.png} class="imageround"
-						style="color: blue; font-size: 20px;">
-					<font Style="font-family: calibri; color: blue; font-size: 18px"
-						th:text="'&nbsp&nbsp'+${session.USERNAME}"></font>
-				</i> <i th:if="${session.IMAGEUSER}!=null"><img th:src="*{'data:image/png;base64,'+session.IMAGEUSER}"
-						class="imageround" style="color: blue; font-size: 20px;">
-					<font Style="font-family: calibri; color: blue; font-size: 18px"
-						th:text="'&nbsp&nbsp'+${session.USERNAME}"></font>
+				<!-- User Image -->
+				<i th:if="${session.IMAGEUSER} == null"> <img
+					th:src="@{/images/UserImage.png}" class="imageround"
+					style="color: blue; font-size: 20px; margin-left: -183%; margin-bottom: -29%;">
+				</i> <i th:if="${session.IMAGEUSER} != null"> <img
+					th:src="*{'data:image/png;base64,' + session.IMAGEUSER}"
+					class="imageround" style="color: blue; font-size: 20px;">
 				</i>
-				
-				<img th:src=@{/images/Bob_bank.png} style="width: 100px; height: 70px; margin-right: -30px;margin-top: -6px" id="showmenu"
-				alt="Bornfire">
+
+				<!-- User Details Section -->
+				<div
+					style="margin-top: -30px; font-family: calibri; font-size: 14px; color: #333;">
+
+					<div class="row formline">
+						<span class="ms-2"> <b>User ID</b> : <span
+							th:text="${session.USERID}"></span>
+						</span>
+					</div>
+
+					<div class="row formline">
+						<span class="ms-2"> <b>User Name</b> : <span
+							th:text="${session.USERNAME}"></span>
+						</span>
+					</div>
+
+					<div class="row formline">
+						<span class="ms-2"> <b>Login Time</b> : <span th:text="${#dates.format(session.LOGIN_TIME, 'dd-MM-yy HH:mm')}"></span>
+						</span>
+					</div>
+
+				</div>
 			</div>
 
 			<div class="btn  float-right" onclick="docEmb()" id="Manual"
-				style="margin-top: 16px; width: 4px; margin-left: 17px; margin-right: 32px;">
-				<i class="fa fa-question-circle" style="color: blue; width: 30px; height: 30px; font-size: 18px;"
+				style="margin-top: 30px; width: 4px; margin-left: 17px; margin-right: 100px;">
+				<i class="fa fa-question-circle"
+					style="color: blue; width: 30px; height: 30px; font-size: 18px;"
 					onclick="docEmb()" title="Manual" id="Manual"></i>
 			</div>
 
 			<div class="btn btn-default float-right"
-				style="margin-top: 16px; width: 4px; margin-left: 17px; margin-right: 32px;">
-				<i class="fa fa-home" style="color: blue; width: 30px; height: 30px; font-size: 18px;"
+				style="margin-top: 30px; width: 4px; margin-left: 17px; margin-right: 32px;">
+				<i class="fa fa-home"
+					style="color: blue; width: 30px; height: 30px; font-size: 18px;"
 					onclick="contentLoad(this)" title="Dashboard" id="BSWIFTDashboard"></i>
 			</div>
 
@@ -644,9 +668,6 @@ jQuery(function($){
 				<!-- <i class="fa fa-area-chart" style="color: blue;width: 30px;height: 30px;font-size: 18px;"  title="Snapshot"
 					id="snapShot"></i> -->
 			</div>
-
-
-
 		</div>
 	</nav>
 

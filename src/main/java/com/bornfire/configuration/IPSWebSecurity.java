@@ -297,6 +297,8 @@ public class IPSWebSecurity extends WebSecurityConfigurerAdapter {
 				request.getSession().setAttribute("DOMAINID", user.getDomain_id());
 				request.getSession().setAttribute("PERMISSIONS", user.getPermissions());
 				request.getSession().setAttribute("WORKCLASS", user.getWork_class());
+				request.getSession().setAttribute("LOGIN_TIME", new Date());
+
 
 				if (user.getPhoto() != null) {
 					request.getSession().setAttribute("IMAGEUSER", Base64.getEncoder().encodeToString(user.getPhoto()));
