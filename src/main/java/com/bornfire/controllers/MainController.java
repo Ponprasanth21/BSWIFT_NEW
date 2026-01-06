@@ -124,6 +124,7 @@ import com.bornfire.entity.WalletMasterTable;
 import com.bornfire.entity.WalletTranMasterTable;
 import com.bornfire.services.BIPSBankandBranchServices;
 import com.bornfire.services.BulkServices;
+import com.bornfire.services.GmailReadService;
 import com.bornfire.services.IPSAccessRoleService;
 import com.bornfire.services.IPSServices;
 import com.bornfire.services.LoginSecurityServices;
@@ -150,6 +151,9 @@ public class MainController {
 
 	@Autowired
 	UserProfileService userProfileService;
+	
+	 @Autowired
+     GmailReadService service;
 
 	@Autowired
 	LoginSecurityRepository loginSecurityRepository;
@@ -363,7 +367,7 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/BSWIFTDashboard", method = { RequestMethod.GET, RequestMethod.POST })
-	public String dashboard(Model md, HttpServletRequest req) {
+	public String dashboard(Model md, HttpServletRequest req) throws Exception {
 
 		String roleId = (String) req.getSession().getAttribute("ROLEID");
 		md.addAttribute("IPSRoleMenu", AccessRoleService.getRoleMenu(roleId));
@@ -372,6 +376,8 @@ public class MainController {
 		md.addAttribute("MttomxFail", bipsSwiftMsgConversionRepo.MTtotalfailure());
 		md.addAttribute("Mxtomxsuccess", bipsSwiftMsgConversionRepo.Mxtotalsuccess());
 		md.addAttribute("MxtomxFail", bipsSwiftMsgConversionRepo.Mxtotalfailure());
+		md.addAttribute("mailList", service.readAndSaveEmails());
+
 
 		md.addAttribute("menu", "Dashboard");
 		return "IPSDashboard";
@@ -4855,7 +4861,5 @@ public class MainController {
 	    System.out.println("File renamed to: " + targetPath);
 	}
 
-
-
-
 }
+

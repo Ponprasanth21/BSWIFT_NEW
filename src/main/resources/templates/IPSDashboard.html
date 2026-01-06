@@ -125,6 +125,88 @@ backdrop-filter: blur(20px);
 -webkit-backdrop-filter: blur(20px);
 border: 1px solid rgba(255, 255, 255, 1);
     }
+
+
+	/* ===== Modal Width & Position ===== */
+.modal-dialog {
+    max-width: 90%;           /* Desktop width */
+    width: 90%;
+}
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        max-width: 100%;
+        margin: 10px;
+    }
+}
+
+/* ===== Modal Content ===== */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+.modal-header .close {
+    color: #fff;
+    opacity: 1;
+}
+
+/* ===== Modal Body ===== */
+.modal-body {
+    max-height: 70vh;          /* Height control */
+    overflow-y: auto;          /* Scroll if content exceeds */
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* ===== Table Styling ===== */
+.modal-body table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+/* Table Head */
+.modal-body thead {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.modal-body th,
+.modal-body td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    vertical-align: top;
+}
+
+/* Zebra Striping */
+.modal-body tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Hover Effect */
+.modal-body tbody tr:hover {
+    background-color: #e9f5ff;
+}
+
+/* Long Email Body Handling */
+.modal-body td:nth-child(4) {
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===== Modal Footer ===== */
+.modal-footer {
+	margin: auto;
+    background-color: #f1f1f1;
+    padding: 10px 20px;
+}
+
 </style>
 </head>
 <script th:inline="javascript">
@@ -137,6 +219,8 @@ border: 1px solid rgba(255, 255, 255, 1);
 
 <script>
 $(document).ready(function() {
+
+$("#modal-buttom").trigger("click");
   $(window).keydown(function(event){
 	 //alert($('#alert').hasClass('show'));
     if(event.keyCode == 13) {
@@ -365,6 +449,9 @@ $(document).ready(function() {
 						<div class="col-xl-6">
 							<div class="card-box">
 
+								<button type="button" id="modal-buttom" style="display: none;" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Launch demo modal
+</button>
 
 								<h3 class="header-title" style="font-size: 1rem;">MT to MX Conversion</h3>
 
@@ -459,7 +546,51 @@ $(document).ready(function() {
 
 	</div>
 	<!-- content -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="width: fit-content;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Unread Mails</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="width:fit-content;margin: auto;" >
+        <table border="1" style="width:100%; border-collapse: collapse;">
+			<thead>
+				<tr>
+					<th style="font-size: medium;" >S.No</th>
+					<th style="font-size: medium;" >From</th>
+					<th style="font-size: medium;" >Subject</th>
+					<!-- <th style="font-size: medium;" >Body</th> -->
+					<th style="white-space: nowrap;">Received Time</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="mail, stat : ${mailList}">
+					<td style="font-size: medium;" th:text="${stat.count}"></td>
+					<td style="font-size: medium;white-space: nowrap;" th:text="${mail.from}"></td>
+					<td style="font-size: medium;white-space: nowrap;" th:text="${mail.subject}"></td>
+					<!-- <td style="font-size: medium;width: fit-content;white-space: nowrap;" th:text="${mail.body}"></td> -->
+					<td style="font-size: medium;white-space: nowrap;" th:text="${#temporals.format(mail.recivedtime, 'dd-MM-yyyy HH:mm:ss')}"></td>
+				</tr>
+				<!-- When no mails -->
+				<tr th:if="${#lists.isEmpty(mailList)}">
+					<td colspan="5" style="font-size: medium;text-align:center; color:red;">
+						No Unread mails found
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 	<!-- ============================================================== -->
